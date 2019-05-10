@@ -12,7 +12,7 @@ class Scraper:
         if headless:
             options.add_argument('--headless')
         options.add_argument('--no-sandbox')
-        self.driver = webdriver.Chrome(chrome_options=options)
+        self.driver = webdriver.Chrome(options=options)
         print('Scraper initialized in ' + str(round(time.time() - start, 1)) + ' seconds')
 
     def destroy(self):
@@ -30,7 +30,7 @@ class Scraper:
                 break
             last_height = new_height
 
-        all_articles = self.driver.find_element_by_xpath('//*[@id="homepage-filters"]/article/div/div[2]/div[2]/div[1]/div')
+        all_articles = self.driver.find_element_by_xpath('//*[@id="homepage-filters"]/article/div/div[3]/div[2]/div[1]/div')
         for_sale = all_articles.find_elements_by_class_name('listing-transaction-vente')
         output = []
         for item in for_sale:
@@ -52,7 +52,7 @@ class Scraper:
 
     def save_csv(self, data):
         print('Generating .CSV file...')
-        with open('Ventes.csv', 'a') as f:
+        with open('Ventes.csv', 'a', encoding='utf-8') as f:
             wr = csv.writer(f, lineterminator='\n', delimiter=';')
             wr.writerows(data)
         print('Done')
